@@ -3,13 +3,24 @@
 
 **ZeusI** is a distributed benchmarking tool that visualizes and compares in real time the performance of sorting algorithms running on different machines over a network.
 
-> **ZeusI** est un outil de benchmarking distribué qui visualise et compare en temps réel les performances d'algorithmes de tri s'exécutant sur différentes machines en réseau.
+Multiple **worker** processes — each running a different sorting algorithm — connect to a central **server** over TCP. Every 100ms, the server sends the same randomly generated array to all workers simultaneously. Each worker sorts it, measures its execution time and number of comparisons, and sends the results back. The server aggregates the results and broadcasts a live ranking to any connected **dashboard**.
+
+The dashboard is a native GUI application built with [egui](https://github.com/emilk/egui) that displays the workers ranked from fastest to slowest, updating in real time as new results arrive.
+
+Technically, ZeusI demonstrates:
+- **TCP networking** with multiple simultaneous connections using threads and `Arc<Mutex<>>` for shared state
+- **Inter-thread communication** using `mpsc` channels between the network thread and the GUI thread
+- **Trait-based polymorphism** with a common `Sorter` trait implemented by `BubbleSorter`, `MergeSorter` and `InsertionSorter`
+- **Custom binary protocol** with manual serialization over TCP using a `|`-separated text format
+- **Cargo workspace** with four independent crates sharing a common `core` library
+
+> **ZeusI** est un outil de benchmarking distribué qui visualise et compare en temps réel les performances d'algorithmes de tri s'exécutant sur différentes machines en réseau. Plusieurs workers — chacun utilisant un algorithme différent — se connectent à un serveur central via TCP. Le serveur envoie périodiquement le même tableau à tous les workers, collecte leurs résultats et les diffuse en temps réel sur un dashboard graphique.
 
 ---
 
 ## Demo
 
-![ZeusI Dashboard](images\screenshot.png)
+![ZeusI Dashboard](images/screenshot.png)
 
 ---
 
