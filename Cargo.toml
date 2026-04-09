@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"   # toujours mettre "2" (Rust 2021+)
+members = [
+    "crates/core",
+    "crates/server", 
+    "crates/worker", 
+    "crates/dashboard",
+]
+
+# Dépendances partagées entre tous les membres — la clé de la propreté
+[workspace.dependencies]
+serde       = { version = "1", features = ["derive"] }
+tokio       = { version = "1", features = ["full"] }
+anyhow      = "1"
+tracing     = "0.1"
+eframe = "0.34.1"
+egui = "0.34.1"
+
+# Métadonnées partagées
+[workspace.package]
+version     = "0.1.0"
+authors     = ["Lilian Lorgeou <lilian.lorgeou@gmail.com>"]
+edition     = "2021"
+license     = "MIT"
